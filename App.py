@@ -22,12 +22,12 @@ class App():
         self.bottom_frame.pack(side='bottom')
 
         # Home Button
-        self.home_button = Button(self.bottom_frame, text="Home", height=2, width=5, bg='green')
+        self.home_button = Button(self.sidebar_frame, text="Home", height=2, width=5, bg='green')
         self.home_button.place(x=0, y=0)
 
         # Exit Button
-        self.exit_button = Button(self.bottom_frame, text="Exit", height=2, width=5, bg='green', command=self.exit)
-        self.exit_button.place(x=100, y=0)
+        self.exit_button = Button(self.sidebar_frame, text="Exit", height=2, width=5, bg='green', command=self.exit)
+        self.exit_button.place(x=60, y=0)
 
         self.window.mainloop()
     def exit(self):
