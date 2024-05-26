@@ -9,9 +9,6 @@ class App():
         self.window.geometry(str(w_width) + "x" + str(w_height))
         self.window.title(app_title)
 
-        self.top_frame = Frame(background='red', width=w_width, height=100)
-        self.top_frame.pack()
-
         self.main_frame = Frame(background=bg_color, width=w_width, height=(w_height-200))
         self.main_frame.pack()
 
