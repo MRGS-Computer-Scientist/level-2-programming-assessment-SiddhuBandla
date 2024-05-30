@@ -30,9 +30,17 @@ class App():
         self.home_button = Button(self.sidebar_frame, text="Home", height=2, width=20, bg='#686D76')
         self.home_button.place(x=0, y=50)
 
+        # Science Button
+        self.science_button = Button(self.sidebar_frame, text="Science", height=2, width=20, bg='#686D76')
+        self.science_button.place(x=0, y=100)
+
+        # Maths Button
+        self.maths_button = Button(self.sidebar_frame, text="Maths", height=2, width=20, bg='#686D76')
+        self.maths_button.place(x=0, y=150)
+
         # Exit Button
         self.exit_button = Button(self.sidebar_frame, text="Exit", height=2, width=20, bg='#686D76', command=self.exit)
-        self.exit_button.place(x=0, y=100)
+        self.exit_button.place(x=0, y=200)
 
         self.window.mainloop()
     
