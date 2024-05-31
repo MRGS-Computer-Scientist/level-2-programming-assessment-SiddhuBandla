@@ -3,6 +3,9 @@ from tkinter import messagebox
 from app_settings import *
 from os import *
 
+from PIL import ImageTk, Image
+
+
 class App:
    
     def __init__(self):
