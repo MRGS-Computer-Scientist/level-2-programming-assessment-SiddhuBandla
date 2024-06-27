@@ -3,6 +3,7 @@ from tkinter import messagebox, ttk
 from app_settings import *
 from os import *
 from PIL import ImageTk, Image
+import webbrowser
 
 class App:
     def __init__(self):
@@ -91,7 +92,7 @@ class App:
         self.history.append(lambda: self.level_selected(event))  # Add current page to history
         self.clear_main_frame()
 
-        science_label = Label(self.main_frame, text=f"Welcome to the Science Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+        science_label = Label(self.main_frame, text=f"Welcome to the Maths Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
         science_label.place(relx=0.5, rely=0.2, anchor=N)
 
         if level == "Level 1":
@@ -127,8 +128,20 @@ class App:
     def show_maths_page(self):
         self.history.append(self.show_maths_page)  # Add current page to history
         self.clear_main_frame()
-        maths_label = Label(self.main_frame, text="Welcome to the Maths Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
-        maths_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+        
+        # Set the appropriate level label
+        level_label_text = "Select Maths Level"
+        
+        maths_label = Label(self.main_frame, text=level_label_text, bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+        maths_label.place(relx=0.5, rely=0.2, anchor=N)
+
+        # Add dropdown bar for M Level selection
+        levels = ["Maths Level 1", "Maths Level 2", "Maths Level 3"]
+        self.level_combobox = ttk.Combobox(self.main_frame, values=levels, font=('Helvetica', 12))
+        self.level_combobox.set("Select Level")
+        self.level_combobox.place(relx=0.5, rely=0.3, anchor=CENTER)
+        self.level_combobox.bind("<<ComboboxSelected>>", self.level_selected)
+
         self.add_back_button()
 
     # Function to display the Quiz Page
