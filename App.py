@@ -99,12 +99,19 @@ class App:
             subject_urls = {
                 "General Science": "https://www.nobraintoosmall.co.nz/science/general_science.html"
             }
-        elif level == "Level 2" or level == "Level 3":
+        elif level == "Level 2":
             subjects = ["Physics", "Chemistry", "Biology"]
             subject_urls = {
                 "Physics": "https://www.nobraintoosmall.co.nz/html/senior_physics/NCEA2_physics.html",
                 "Chemistry": "https://www.nobraintoosmall.co.nz/html/senior_chemistry/NCEA2_chemistry.html",
                 "Biology": "https://www.nobraintoosmall.co.nz/html/senior_biology/NCEA2_biology.html"
+            }
+        elif level == "Level 3":
+            subjects = ["Physics", "Chemistry", "Biology"]
+            subject_urls = {
+                "Physics": "https://www.nobraintoosmall.co.nz/html/senior_physics/NCEA3_physics.html",
+                "Chemistry": "https://www.nobraintoosmall.co.nz/html/senior_chemistry/NCEA3_chemistry.html",
+                "Biology": "https://www.nobraintoosmall.co.nz/html/senior_biology/NCEA3_biology.html"
             }
 
         # Calculate starting position for buttons
