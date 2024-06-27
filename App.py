@@ -74,13 +74,13 @@ class App:
         self.history.append(self.show_science_page)  # Add current page to history
         self.clear_main_frame()
         science_label = Label(self.main_frame, text="Welcome to the Science Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
-        science_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+        science_label.place(relx=0.5, rely=0.2, anchor=N)
 
         # Add dropdown bar for Level selection
         levels = ["Level 1", "Level 2", "Level 3"]
         self.level_combobox = ttk.Combobox(self.main_frame, values=levels, font=('Helvetica', 12))
         self.level_combobox.set("Select Level")
-        self.level_combobox.place(relx=0.5, rely=0.6, anchor=CENTER)
+        self.level_combobox.place(relx=0.5, rely=0.3, anchor=CENTER)
         self.level_combobox.bind("<<ComboboxSelected>>", self.level_selected)
 
         self.add_back_button()
@@ -92,12 +92,27 @@ class App:
         self.clear_main_frame()
 
         science_label = Label(self.main_frame, text=f"Welcome to the Science Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
-        science_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+        science_label.place(relx=0.5, rely=0.2, anchor=N)
 
-        subjects = ["Physics", "Chemistry", "Biology"]
+        if level == "Level 1":
+            subjects = ["General Science"]
+            subject_urls = {
+                "General Science": "https://www.nobraintoosmall.co.nz/science/general_science.html"
+            }
+        elif level == "Level 2" or level == "Level 3":
+            subjects = ["Physics", "Chemistry", "Biology"]
+            subject_urls = {
+                "Physics": "https://www.nobraintoosmall.co.nz/html/senior_physics/NCEA2_physics.html",
+                "Chemistry": "https://www.nobraintoosmall.co.nz/html/senior_chemistry/NCEA2_chemistry.html",
+                "Biology": "https://www.nobraintoosmall.co.nz/html/senior_biology/NCEA2_biology.html"
+            }
+
+        # Calculate starting position for buttons
+        start_x = 0.5 - (len(subjects) / 2 * 0.15)
+
         for i, subject in enumerate(subjects):
-            subject_button = Button(self.main_frame, text=subject, height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'))
-            subject_button.place(relx=0.5, rely=0.6 + (i * 0.1), anchor=CENTER)
+            subject_button = Button(self.main_frame, text=subject, height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda url=subject_urls[subject]: self.open_resource(url))
+            subject_button.place(relx=start_x + i * 0.3, rely=0.5, anchor=CENTER)
 
         self.add_back_button()
 
@@ -140,6 +155,11 @@ class App:
     def add_back_button(self):
         back_button = Button(self.main_frame, text="Back", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=self.go_back)
         back_button.place(relx=0.05, rely=0.95, anchor=SW)
+
+    # Function to open the resource link
+    def open_resource(self, url):
+        import webbrowser
+        webbrowser.open(url)
 
 # Create and run the app
 app = App()
