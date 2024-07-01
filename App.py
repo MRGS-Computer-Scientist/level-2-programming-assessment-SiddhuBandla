@@ -52,15 +52,46 @@ class App:
         self.quiz_button = Button(self.sidebar_frame, text="Quiz", height=2, width=15, bg=button_bg, fg=button_fg, activebackground=button_active_bg, activeforeground=button_active_fg, font=button_font, command=self.show_quiz_page)
         self.quiz_button.pack(pady=10)
 
-        # Exit Button - Exits the application
-        self.exit_button = Button(self.sidebar_frame, text="Exit", height=2, width=15, bg=button_bg, fg=button_fg, activebackground=button_active_bg, activeforeground=button_active_fg, font=button_font, command=self.exit)
-        self.exit_button.pack(pady=10)
+        # Dark Mode Button - Toggle Dark mode
+        self.dark_mode_button = Button(self.window, text="Dark Mode", bg='#222', fg='white', font=('Helvetica', 10, 'bold'), command=self.toggle_dark_mode)
+        self.dark_mode_button.place(relx=1, rely=0, anchor=NE, x=-10, y=10)
 
         # Initialize Home Page - Displays the home page initially
         self.show_home_page()
 
         # Start the main loop
         self.window.mainloop()
+
+    # Function to toggle Dark mode
+    def toggle_dark_mode(self):
+        # Toggle background and text colors
+        global bg_color
+        if bg_color == 'white':
+            bg_color = '#222'  # Dark mode background color
+            self.window.config(bg=bg_color)
+            self.sidebar_frame.config(bg='#444')
+            self.bottom_frame.config(bg='#111')
+            self.title_label.config(bg='#444', fg='white')
+            self.home_button.config(bg='#444', fg='white', activebackground='#333', activeforeground='white')
+            self.science_button.config(bg='#444', fg='white', activebackground='#333', activeforeground='white')
+            self.maths_button.config(bg='#444', fg='white', activebackground='#333', activeforeground='white')
+            self.quiz_button.config(bg='#444', fg='white', activebackground='#333', activeforeground='white')
+            self.dark_mode_button.config(bg='#444', fg='white', activebackground='#333', activeforeground='white')
+            for widget in self.main_frame.winfo_children():
+                widget.config(bg='#222', fg='white' if isinstance(widget, Button) else 'black')
+        else:
+            bg_color = 'white'  # Light mode background color
+            self.window.config(bg=bg_color)
+            self.sidebar_frame.config(bg='#57A6A1')
+            self.bottom_frame.config(bg='#3A3A3A')
+            self.title_label.config(bg='#57A6A1', fg='white')
+            self.home_button.config(bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white')
+            self.science_button.config(bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white')
+            self.maths_button.config(bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white')
+            self.quiz_button.config(bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white')
+            self.dark_mode_button.config(bg='#222', fg='white', activebackground='#333', activeforeground='white')
+            for widget in self.main_frame.winfo_children():
+                widget.config(bg=bg_color, fg='black')
 
     # Function to display the Home Page
     def show_home_page(self):
@@ -119,24 +150,28 @@ class App:
         start_x = 0.5 - (len(subjects) / 2 * 0.15)
 
         for i, subject in enumerate(subjects):
-            subject_button = Button(self.main_frame, text=subject, height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda url=subject_urls[subject]: self.open_resource(url))
-            subject_button.place(relx=start_x + i * 0.3, rely=0.5, anchor=CENTER)
+            subject_button = Button(self.main_frame, text=subject, height=2, width=15, bg=button_bg, fg=button_fg,
+                                    activebackground=button_active_bg, activeforeground=button_active_fg,
+                                    font=button_font,
+                                    command=lambda subj=subject: self.open_subject_page(subject_urls.get(subj)))
+            subject_button.place(relx=start_x + i * 0.15, rely=0.5, anchor=N)
 
         self.add_back_button()
+
+    # Function to open a subject page in a web browser
+    def open_subject_page(self, url):
+        webbrowser.open_new(url)
 
     # Function to display the Maths Page
     def show_maths_page(self):
         self.history.append(self.show_maths_page)  # Add current page to history
         self.clear_main_frame()
-        
-        # Set the appropriate level label
-        level_label_text = "Select Maths Level"
-        
-        maths_label = Label(self.main_frame, text=level_label_text, bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+
+        maths_label = Label(self.main_frame, text="Welcome to the Maths Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
         maths_label.place(relx=0.5, rely=0.2, anchor=N)
 
-        # Add dropdown bar for M Level selection
-        levels = ["Maths Level 1", "Maths Level 2", "Maths Level 3"]
+        # Add dropdown bar for Level selection
+        levels = ["Level 1", "Level 2", "Level 3"]
         self.level_combobox = ttk.Combobox(self.main_frame, values=levels, font=('Helvetica', 12))
         self.level_combobox.set("Select Level")
         self.level_combobox.place(relx=0.5, rely=0.3, anchor=CENTER)
@@ -153,34 +188,37 @@ class App:
         maths_label = Label(self.main_frame, text=f"Welcome to the Maths Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
         maths_label.place(relx=0.5, rely=0.2, anchor=N)
 
-        if level == "Maths Level 1":
-            subjects = ["Algebra", "Geometry", "Statistics"]
+        if level == "Level 1":
+            subjects = ["Algebra", "Statistics", "Calculus"]
             subject_urls = {
-                "Algebra": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=algebra&view=all&level=01",
-                "Geometry": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=geometry&view=all&level=01",
-                "Statistics": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=statistics&view=all&level=01"
+                "Algebra": "https://www.nobraintoosmall.co.nz/maths/algebra.html",
+                "Statistics": "https://www.nobraintoosmall.co.nz/maths/statistics.html",
+                "Calculus": "https://www.nobraintoosmall.co.nz/maths/calculus.html"
             }
-        elif level == "Maths Level 2":
-            subjects = ["Calculus", "Trigonometry", "Probability"]
+        elif level == "Level 2":
+            subjects = ["Algebra", "Statistics", "Calculus"]
             subject_urls = {
-                "Calculus": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=calculus&view=all&level=02",
-                "Trigonometry": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=trigonometry&view=all&level=02",
-                "Probability": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=probability&view=all&level=02"
+                "Algebra": "https://www.nobraintoosmall.co.nz/maths/NCEA2_algebra.html",
+                "Statistics": "https://www.nobraintoosmall.co.nz/maths/NCEA2_statistics.html",
+                "Calculus": "https://www.nobraintoosmall.co.nz/maths/NCEA2_calculus.html"
             }
-        elif level == "Maths Level 3":
-            subjects = ["Advanced Calculus", "Advanced Algebra", "Advanced Statistics"]
+        elif level == "Level 3":
+            subjects = ["Algebra", "Statistics", "Calculus"]
             subject_urls = {
-                "Advanced Calculus": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+calculus&view=all&level=03",
-                "Advanced Algebra": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+algebra&view=all&level=03",
-                "Advanced Statistics": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+statistics&view=all&level=03"
+                "Algebra": "https://www.nobraintoosmall.co.nz/maths/NCEA3_algebra.html",
+                "Statistics": "https://www.nobraintoosmall.co.nz/maths/NCEA3_statistics.html",
+                "Calculus": "https://www.nobraintoosmall.co.nz/maths/NCEA3_calculus.html"
             }
 
         # Calculate starting position for buttons
         start_x = 0.5 - (len(subjects) / 2 * 0.15)
 
         for i, subject in enumerate(subjects):
-            subject_button = Button(self.main_frame, text=subject, height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda url=subject_urls[subject]: self.open_resource(url))
-            subject_button.place(relx=start_x + i * 0.3, rely=0.5, anchor=CENTER)
+            subject_button = Button(self.main_frame, text=subject, height=2, width=15, bg=button_bg, fg=button_fg,
+                                    activebackground=button_active_bg, activeforeground=button_active_fg,
+                                    font=button_font,
+                                    command=lambda subj=subject: self.open_subject_page(subject_urls.get(subj)))
+            subject_button.place(relx=start_x + i * 0.15, rely=0.5, anchor=N)
 
         self.add_back_button()
 
@@ -192,33 +230,23 @@ class App:
         quiz_label.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.add_back_button()
 
-    # Function to clear the main frame
+    # Function to clear the main frame before loading a new page
     def clear_main_frame(self):
         for widget in self.main_frame.winfo_children():
             widget.destroy()
 
-    # Function to exit the application
-    def exit(self):
-        answer = messagebox.askyesno("Exit", "Are you sure you want to exit?")
-        if answer:
-            print("Exit app")
-            self.window.destroy()
+    # Function to add a Back button for navigation
+    def add_back_button(self):
+        if len(self.history) > 1:
+            back_button = Button(self.bottom_frame, text="Back", bg=button_bg, fg=button_fg, activebackground=button_active_bg, activeforeground=button_active_fg, font=button_font, command=self.go_back)
+            back_button.place(relx=0.02, rely=0.5, anchor=W)
 
-    # Function to go back to the previous page
+    # Function to navigate back to the previous page
     def go_back(self):
         if len(self.history) > 1:
-            self.history.pop()  # Remove the current page
-            last_page = self.history.pop()  # Get the previous page
-            last_page()  # Show the previous page
+            self.history.pop()  # Remove current page
+            previous_page = self.history.pop()  # Get previous page function
+            previous_page()  # Display previous page
 
-    # Function to add a back button
-    def add_back_button(self):
-        back_button = Button(self.main_frame, text="Back", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=self.go_back)
-        back_button.place(relx=0.05, rely=0.95, anchor=SW)
-
-    # Function to open the resource link
-    def open_resource(self, url):
-        webbrowser.open(url)
-
-# Create and run the app
-app = App()
+if __name__ == "__main__":
+    app = App()
