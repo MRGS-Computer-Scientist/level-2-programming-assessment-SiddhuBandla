@@ -82,17 +82,17 @@ class App:
         self.level_combobox = ttk.Combobox(self.main_frame, values=levels, font=('Helvetica', 12))
         self.level_combobox.set("Select Level")
         self.level_combobox.place(relx=0.5, rely=0.3, anchor=CENTER)
-        self.level_combobox.bind("<<ComboboxSelected>>", self.level_selected)
+        self.level_combobox.bind("<<ComboboxSelected>>", self.level_selected_science)
 
         self.add_back_button()
 
-    # Function called when a level is selected
-    def level_selected(self, event):
+    # Function called when a science level is selected
+    def level_selected_science(self, event):
         level = self.level_combobox.get()
-        self.history.append(lambda: self.level_selected(event))  # Add current page to history
+        self.history.append(lambda: self.level_selected_science(event))  # Add current page to history
         self.clear_main_frame()
 
-        science_label = Label(self.main_frame, text=f"Welcome to the Maths Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+        science_label = Label(self.main_frame, text=f"Welcome to the Science Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
         science_label.place(relx=0.5, rely=0.2, anchor=N)
 
         if level == "Level 1":
@@ -140,7 +140,47 @@ class App:
         self.level_combobox = ttk.Combobox(self.main_frame, values=levels, font=('Helvetica', 12))
         self.level_combobox.set("Select Level")
         self.level_combobox.place(relx=0.5, rely=0.3, anchor=CENTER)
-        self.level_combobox.bind("<<ComboboxSelected>>", self.level_selected)
+        self.level_combobox.bind("<<ComboboxSelected>>", self.level_selected_maths)
+
+        self.add_back_button()
+
+    # Function called when a maths level is selected
+    def level_selected_maths(self, event):
+        level = self.level_combobox.get()
+        self.history.append(lambda: self.level_selected_maths(event))  # Add current page to history
+        self.clear_main_frame()
+
+        maths_label = Label(self.main_frame, text=f"Welcome to the Maths Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+        maths_label.place(relx=0.5, rely=0.2, anchor=N)
+
+        if level == "Maths Level 1":
+            subjects = ["Algebra", "Geometry", "Statistics"]
+            subject_urls = {
+                "Algebra": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=algebra&view=all&level=01",
+                "Geometry": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=geometry&view=all&level=01",
+                "Statistics": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=statistics&view=all&level=01"
+            }
+        elif level == "Maths Level 2":
+            subjects = ["Calculus", "Trigonometry", "Probability"]
+            subject_urls = {
+                "Calculus": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=calculus&view=all&level=02",
+                "Trigonometry": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=trigonometry&view=all&level=02",
+                "Probability": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=probability&view=all&level=02"
+            }
+        elif level == "Maths Level 3":
+            subjects = ["Advanced Calculus", "Advanced Algebra", "Advanced Statistics"]
+            subject_urls = {
+                "Advanced Calculus": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+calculus&view=all&level=03",
+                "Advanced Algebra": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+algebra&view=all&level=03",
+                "Advanced Statistics": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+statistics&view=all&level=03"
+            }
+
+        # Calculate starting position for buttons
+        start_x = 0.5 - (len(subjects) / 2 * 0.15)
+
+        for i, subject in enumerate(subjects):
+            subject_button = Button(self.main_frame, text=subject, height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda url=subject_urls[subject]: self.open_resource(url))
+            subject_button.place(relx=start_x + i * 0.3, rely=0.5, anchor=CENTER)
 
         self.add_back_button()
 
@@ -178,7 +218,6 @@ class App:
 
     # Function to open the resource link
     def open_resource(self, url):
-        import webbrowser
         webbrowser.open(url)
 
 # Create and run the app
