@@ -70,7 +70,7 @@ class App:
         self.history.append(self.show_home_page)  # Add current page to history
         self.clear_main_frame()
         home_label = Label(self.main_frame, text="Welcome to the Home Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
-        home_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+        home_label.place(relx=0.5, rely=0.6, anchor=CENTER)
         self.add_back_button()
 
     # Function to display the Science Page
