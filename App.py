@@ -175,23 +175,23 @@ class App:
         if level == "Maths Level 1":
             topics = ["Algebra", "Geometry", "Statistics"]
             topic_urls = {
-                "Algebra": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91261.pdf",
-                "Geometry": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91264.pdf",
-                "Statistics": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91267.pdf"
+                "Algebra": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=algebra&view=all&level=01",
+                "Geometry": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=geometry&view=all&level=01",
+                "Statistics": "https://www.nzqa.govt.nz/ncea/assessment/search.do?"
             }
         elif level == "Maths Level 2":
             topics = ["Trigonometry", "Calculus", "Probability"]
             topic_urls = {
-                "Trigonometry": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91262.pdf",
-                "Calculus": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91265.pdf",
-                "Probability": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91268.pdf"
+                "Trigonometry": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=calculus&view=all&level=02",
+                "Calculus": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=trigonometry&view=all&level=02",
+                "Probability": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=probability&view=all&level=02"
             }
         elif level == "Maths Level 3":
             topics = ["Advanced Calculus", "Linear Algebra", "Number Theory"]
             topic_urls = {
-                "Advanced Calculus": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91368.pdf",
-                "Linear Algebra": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91369.pdf",
-                "Number Theory": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91370.pdf"
+                "Advanced Calculus": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+calculus&view=all&level=03",
+                "Linear Algebra": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+algebra&view=all&level=03",
+                "Number Theory": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+statistics&view=all&level=03"
             }
 
         # Calculate starting position for buttons
@@ -289,7 +289,7 @@ class App:
         contact_label.place(relx=0.5, rely=0.2, anchor=N)
 
         contact_text = Text(self.main_frame, height=10, width=50)
-        contact_text.insert(END, "For any queries, please email us at: 22305@students.mrgs.schoo.nz")
+        contact_text.insert(END, "For any queries, please email us at: 22305@students.mrgs.school.nz")
         contact_text.config(state=DISABLED)
         contact_text.place(relx=0.5, rely=0.5, anchor=CENTER)
 
