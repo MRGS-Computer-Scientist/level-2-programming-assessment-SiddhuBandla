@@ -12,17 +12,17 @@ bg_color = '#EAEDED'
 class App:
     def __init__(self):
         self.window = Tk()
-        self.window.geometry(str(w_width) + "x" + str(w_height))
+        self.window.geometry(f"{w_width}x{w_height}")
         self.window.title(app_title)
 
         self.history = []  # History stack for navigation
 
         # Main Frame - Central area for displaying main content
-        self.main_frame = Frame(self.window, background=bg_color, width=w_width - 150, height=(w_height - 200))
+        self.main_frame = Frame(self.window, background=bg_color, width=w_width - 150, height=w_height - 200)
         self.main_frame.pack(side='right', fill=BOTH, expand=True)
 
         # Sidebar Frame - Navigation bar on the left side
-        self.sidebar_frame = Frame(self.window, background='#57A6A1', width=150, height=(w_height))
+        self.sidebar_frame = Frame(self.window, background='#57A6A1', width=150, height=w_height)
         self.sidebar_frame.pack(side='left', fill=Y)
 
         # Bottom Frame - Bottom bar
@@ -55,6 +55,10 @@ class App:
         # Quiz Button - Navigates to the Quiz page
         self.quiz_button = Button(self.sidebar_frame, text="Quiz", height=2, width=15, bg=button_bg, fg=button_fg, activebackground=button_active_bg, activeforeground=button_active_fg, font=button_font, command=self.show_quiz_page)
         self.quiz_button.pack(pady=10)
+
+        # Contact Us Button - Navigates to the Contact Us page
+        self.contact_button = Button(self.sidebar_frame, text="Contact Us", height=2, width=15, bg=button_bg, fg=button_fg, activebackground=button_active_bg, activeforeground=button_active_fg, font=button_font, command=self.show_contact_page)
+        self.contact_button.pack(pady=10)
 
         # Exit Button - Exits the application
         self.exit_button = Button(self.sidebar_frame, text="Exit", height=2, width=15, bg=button_bg, fg=button_fg, activebackground=button_active_bg, activeforeground=button_active_fg, font=button_font, command=self.exit)
@@ -165,32 +169,39 @@ class App:
         self.history.append(lambda: self.level_selected_maths(event))  # Add current page to history
         self.clear_main_frame()
 
-        level_label_text = f"Welcome to the Maths Page - {level}"
-        maths_label = Label(self.main_frame, text=level_label_text, bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+        maths_label = Label(self.main_frame, text=f"Welcome to the Maths Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
         maths_label.place(relx=0.5, rely=0.2, anchor=N)
 
-        # Depending on the level, display appropriate content
         if level == "Maths Level 1":
-            # Display resources or content for Maths Level 1
-            url = "https://www.nobraintoosmall.co.nz/maths/NCEA1_mathematics.html"
+            topics = ["Algebra", "Geometry", "Statistics"]
+            topic_urls = {
+                "Algebra": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91261.pdf",
+                "Geometry": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91264.pdf",
+                "Statistics": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91267.pdf"
+            }
         elif level == "Maths Level 2":
-            # Display resources or content for Maths Level 2
-            url = "https://www.nobraintoosmall.co.nz/maths/NCEA2_mathematics.html"
+            topics = ["Trigonometry", "Calculus", "Probability"]
+            topic_urls = {
+                "Trigonometry": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91262.pdf",
+                "Calculus": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91265.pdf",
+                "Probability": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91268.pdf"
+            }
         elif level == "Maths Level 3":
-            # Display resources or content for Maths Level 3
-            url = "https://www.nobraintoosmall.co.nz/maths/NCEA3_mathematics.html"
-        else:
-            url = ""
+            topics = ["Advanced Calculus", "Linear Algebra", "Number Theory"]
+            topic_urls = {
+                "Advanced Calculus": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91368.pdf",
+                "Linear Algebra": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91369.pdf",
+                "Number Theory": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91370.pdf"
+            }
 
-        if url:
-            open_url_button = Button(self.main_frame, text="Open Resource", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda: self.open_resource(url))
-            open_url_button.place(relx=0.5, rely=0.5, anchor=CENTER)
+        # Calculate starting position for buttons
+        start_x = 0.5 - (len(topics) / 2 * 0.15)
+
+        for i, topic in enumerate(topics):
+            topic_button = Button(self.main_frame, text=topic, height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda url=topic_urls[topic]: self.open_resource(url))
+            topic_button.place(relx=start_x + i * 0.3, rely=0.5, anchor=CENTER)
 
         self.add_back_button()
-
-    # Function to open a web resource in a browser
-    def open_resource(self, url):
-        webbrowser.open_new(url)
 
     # Function to display the Quiz Page
     def show_quiz_page(self):
@@ -198,102 +209,116 @@ class App:
         self.clear_main_frame()
 
         quiz_label = Label(self.main_frame, text="Welcome to the Quiz Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
-        quiz_label.place(relx=0.5, rely=0.1, anchor=N)
+        quiz_label.place(relx=0.5, rely=0.2, anchor=N)
 
-        # Quiz questions and answers
-        self.questions = [
-            {
-                'question': 'What is the powerhouse of the cell?',
-                'options': ['Nucleus', 'Mitochondrion', 'Ribosome', 'Lysosome'],
-                'correct_answer': 'Mitochondrion'
-            },
-            {
-                'question': 'Which planet is known as the Red Planet?',
-                'options': ['Mars', 'Jupiter', 'Saturn', 'Venus'],
-                'correct_answer': 'Mars'
-            },
-            {
-                'question': 'What is the value of π (pi) approximately equal to?',
-                'options': ['3.14', '2.71', '1.61', '4.20'],
-                'correct_answer': '3.14'
-            },
-            {
-                'question': 'Which equation represents the Pythagorean theorem?',
-                'options': ['a^2 + b^2 = c^2', 'E = mc^2', 'F = ma', 'F = m * a'],
-                'correct_answer': 'a^2 + b^2 = c^2'
-            },
-            {
-                'question': 'What is the chemical symbol for water?',
-                'options': ['H2O', 'CO2', 'O2', 'HCl'],
-                'correct_answer': 'H2O'
-            },
-            # Add more questions as needed...
+        # Example Quiz questions (at least 10 questions)
+        questions = [
+            {"question": "What is the square root of 81?", "options": ["9", "8", "7", "6"], "answer": "9"},
+            {"question": "What is the value of pi (π) correct to two decimal places?", "options": ["3.14", "3.12", "3.16", "3.18"], "answer": "3.14"},
+            {"question": "What is the area of a rectangle with length 5 units and width 3 units?", "options": ["8 sq units", "15 sq units", "12 sq units", "7 sq units"], "answer": "15 sq units"},
+            {"question": "What is the formula for the volume of a sphere?", "options": ["πr^2", "4/3πr^3", "2πr", "πr"], "answer": "4/3πr^3"},
+            {"question": "Which mathematical constant is the base of natural logarithms?", "options": ["e", "π", "φ", "γ"], "answer": "e"},
+            {"question": "What is the derivative of sin(x) with respect to x?", "options": ["cos(x)", "sin(x)", "-cos(x)", "-sin(x)"], "answer": "cos(x)"},
+            {"question": "What is the sum of the interior angles of a triangle?", "options": ["180 degrees", "270 degrees", "360 degrees", "90 degrees"], "answer": "180 degrees"},
+            {"question": "What is the formula for the area of a circle?", "options": ["πr^2", "2πr", "πr", "2r"], "answer": "πr^2"},
+            {"question": "What is the value of log10(100)?", "options": ["1", "2", "3", "4"], "answer": "2"},
+            {"question": "What is the equation of a straight line in slope-intercept form?", "options": ["y = mx + b", "y = bx + m", "x = my + b", "x = by + m"], "answer": "y = mx + b"}
         ]
 
         self.current_question = 0
-        self.score = 0
+        self.answer_var = StringVar()
 
-        self.display_question()
-
-    # Function to display current question and options
-    def display_question(self):
-        question_text = self.questions[self.current_question]['question']
-        options = self.questions[self.current_question]['options']
-
-        question_label = Label(self.main_frame, text=question_text, bg=bg_color, fg='black', font=('Helvetica', 14))
+        question_label = Label(self.main_frame, text=questions[self.current_question]["question"], bg=bg_color, fg='black', font=('Helvetica', 12))
         question_label.place(relx=0.5, rely=0.3, anchor=N)
 
-        self.option_var = StringVar()
-        self.option_var.set(None)
-
-        for i, option in enumerate(options):
-            option_button = Radiobutton(self.main_frame, text=option, variable=self.option_var, value=option, bg=bg_color, fg='black', font=('Helvetica', 12))
+        for i, option in enumerate(questions[self.current_question]["options"]):
+            option_button = Radiobutton(self.main_frame, text=option, variable=self.answer_var, value=option)
             option_button.place(relx=0.5, rely=0.4 + i * 0.1, anchor=N)
 
-        submit_button = Button(self.main_frame, text="Submit", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=self.check_answer)
-        submit_button.place(relx=0.5, rely=0.8, anchor=N)
+        next_button = Button(self.main_frame, text="Next", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda: self.next_question(questions))
+        next_button.place(relx=0.5, rely=0.7, anchor=N)
 
         self.add_back_button()
 
-    # Function to check the selected answer
-    def check_answer(self):
-        selected_answer = self.option_var.get()
-        correct_answer = self.questions[self.current_question]['correct_answer']
+    # Function to move to the next question in the quiz
+    def next_question(self, questions):
+        # Check if an answer is selected
+        if self.answer_var.get():
+            self.current_question += 1
+            if self.current_question < len(questions):
+                # Display next question
+                self.clear_main_frame()
 
-        if selected_answer == correct_answer:
-            self.score += 1
+                question_label = Label(self.main_frame, text=questions[self.current_question]["question"], bg=bg_color, fg='black', font=('Helvetica', 12))
+                question_label.place(relx=0.5, rely=0.3, anchor=N)
 
-        self.current_question += 1
+                for i, option in enumerate(questions[self.current_question]["options"]):
+                    option_button = Radiobutton(self.main_frame, text=option, variable=self.answer_var, value=option)
+                    option_button.place(relx=0.5, rely=0.4 + i * 0.1, anchor=N)
 
-        if self.current_question < len(self.questions):
-            self.clear_main_frame()
-            self.display_question()
+                next_button = Button(self.main_frame, text="Next", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=lambda: self.next_question(questions))
+                next_button.place(relx=0.5, rely=0.7, anchor=N)
+            else:
+                # Quiz completed
+                self.show_quiz_complete(questions)
         else:
-            self.clear_main_frame()
-            result_label = Label(self.main_frame, text=f"You scored {self.score} out of {len(self.questions)}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
-            result_label.place(relx=0.5, rely=0.5, anchor=CENTER)
-            self.add_back_button()
+            messagebox.showwarning("Warning", "Please select an answer!")
 
-    # Function to clear the main frame
+    # Function to display the Quiz completion message without showing correct answers
+    def show_quiz_complete(self, questions):
+        self.clear_main_frame()
+
+        correct_answers = sum(1 for q in questions if q["answer"] == self.answer_var.get())
+        total_questions = len(questions)
+
+        score_label = Label(self.main_frame, text=f"Quiz Complete!\nYour Score: {correct_answers}/{total_questions}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+        score_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        # Reset quiz state
+        self.current_question = 0
+        self.answer_var = None
+
+        self.add_back_button()
+
+    # Function to display the Contact Us Page
+    def show_contact_page(self):
+        self.history.append(self.show_contact_page)  # Add current page to history
+        self.clear_main_frame()
+
+        contact_label = Label(self.main_frame, text="Welcome to the Contact Us Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
+        contact_label.place(relx=0.5, rely=0.2, anchor=N)
+
+        contact_text = Text(self.main_frame, height=10, width=50)
+        contact_text.insert(END, "For any queries, please email us at: 22305@students.mrgs.schoo.nz")
+        contact_text.config(state=DISABLED)
+        contact_text.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        self.add_back_button()
+
+    # Function to clear the main frame before loading new content
     def clear_main_frame(self):
         for widget in self.main_frame.winfo_children():
             widget.destroy()
 
-    # Function to add a back button
+    # Function to add a back button for navigation
     def add_back_button(self):
-        if len(self.history) > 1:
-            back_button = Button(self.bottom_frame, text="Back", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=self.go_back)
-            back_button.place(relx=0.1, rely=0.5, anchor=CENTER)
+        back_button = Button(self.bottom_frame, text="Back", height=2, width=15, bg='#4ECDC4', fg='white', activebackground='#3BA18A', activeforeground='white', font=('Helvetica', 12, 'bold'), command=self.back)
+        back_button.pack(side=LEFT, padx=20, pady=20)
 
-    # Function to navigate back in history
-    def go_back(self):
+    # Function to navigate back to the previous page
+    def back(self):
         if len(self.history) > 1:
-            self.history.pop()()  # Call the previous page function from history
+            self.history.pop()  # Remove current page from history
+            previous_page = self.history[-1]
+            previous_page()
+
+    # Function to open a web resource in a browser
+    def open_resource(self, url):
+        webbrowser.open_new(url)
 
     # Function to exit the application
     def exit(self):
         self.window.destroy()
 
-# Run the application
-if __name__ == "__main__":
-    app = App()
+# Create an instance of the App class to start the application
+app = App()
