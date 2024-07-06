@@ -191,7 +191,7 @@ class App:
             topic_urls = {
                 "Advanced Calculus": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+calculus&view=all&level=03",
                 "Linear Algebra": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+algebra&view=all&level=03",
-                "Number Theory": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+statistics&view=all&level=03"
+                "Number Theory": "https://www.nzqa.govt.nz/ncea/assessment/search.do?query=advanced+statistics&view=all&level=03"   
             }
 
         # Calculate starting position for buttons
