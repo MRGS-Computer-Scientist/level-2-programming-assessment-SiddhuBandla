@@ -3,7 +3,7 @@ from tkinter import messagebox, ttk
 import webbrowser
 from PIL import ImageTk, Image
 
-# Assuming these are your existing app settings
+
 app_title = "Study Brain"
 w_width = 1200
 w_height = 700
