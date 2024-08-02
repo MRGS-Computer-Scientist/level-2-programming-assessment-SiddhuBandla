@@ -17,7 +17,7 @@ class App:
 
         self.history = []  # Stack for back button
 
-# Main content frame
+# Main home page frame
         self.main_frame = Frame(self.window, background=bg_color, width=w_width - 150, height=w_height - 200)
         self.main_frame.pack(side='right', fill=BOTH, expand=True)
 
@@ -72,7 +72,7 @@ class App:
 
 # Show the home page
     def show_home_page(self):
-        self.history.append(self.show_home_page)  # Add current page to history
+        self.history.append(self.show_home_page)  # Adds current page to history
         self.clear_main_frame()
 
         home_label = Label(self.main_frame, text="Welcome to the Home Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
@@ -90,13 +90,13 @@ class App:
 
 # Show the science page
     def show_science_page(self):
-        self.history.append(self.show_science_page)  # Add current page to history
+        self.history.append(self.show_science_page)  # Adds current page to history
         self.clear_main_frame()
 
         science_label = Label(self.main_frame, text="Welcome to the Science Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
         science_label.place(relx=0.5, rely=0.2, anchor=N)
 
-# Leve l dropdown
+# dropdown bar for each level
         levels = ["Level 1", "Level 2", "Level 3"]
         self.level_combobox = ttk.Combobox(self.main_frame, values=levels, font=('Helvetica', 12))
         self.level_combobox.set("Select Level")
@@ -108,7 +108,7 @@ class App:
 # science level selection
     def level_selected_science(self, event):
         level = self.level_combobox.get()
-        self.history.append(lambda: self.level_selected_science(event))  # Add current selection to history
+        self.history.append(lambda: self.level_selected_science(event))  # Adds current selection to history
         self.clear_main_frame()
 
         science_label = Label(self.main_frame, text=f"Welcome to the Science Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
@@ -146,7 +146,7 @@ class App:
 
 # Show the maths page
     def show_maths_page(self):
-        self.history.append(self.show_maths_page)  # Add current page to history
+        self.history.append(self.show_maths_page)  # Adds current page to history
         self.clear_main_frame()
 
         level_label_text = "Select Maths Level"
@@ -166,7 +166,7 @@ class App:
 # maths level selection
     def level_selected_maths(self, event):
         level = self.level_combobox.get()
-        self.history.append(lambda: self.level_selected_maths(event))  # Add current selection to history
+        self.history.append(lambda: self.level_selected_maths(event))  # Adds current selection to history
         self.clear_main_frame()
 
         maths_label = Label(self.main_frame, text=f"Welcome to the Maths Page - {level}", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
@@ -204,7 +204,7 @@ class App:
 
 # Show the quiz page
     def show_quiz_page(self):
-        self.history.append(self.show_quiz_page)  # Add current page to history
+        self.history.append(self.show_quiz_page)  # Adds current page to history
         self.clear_main_frame()
 
         quiz_label = Label(self.main_frame, text="Quiz Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
@@ -214,7 +214,7 @@ class App:
 
 # Show the contact page
     def show_contact_page(self):
-        self.history.append(self.show_contact_page)  # Add current page to history
+        self.history.append(self.show_contact_page)  # Adds current page to history
         self.clear_main_frame()
 
         contact_label = Label(self.main_frame, text="Contact Us Page", bg=bg_color, fg='black', font=('Helvetica', 16, 'bold'))
@@ -222,7 +222,7 @@ class App:
 
         self.add_back_button()
 
-# Add back button
+# Adds back button
     def add_back_button(self):
         if len(self.history) > 1:
             back_button = Button(self.bottom_frame, text="Back", height=2, width=15, bg='#3A3A3A', fg='white', activebackground='#282828', activeforeground='white', font=('Helvetica', 12, 'bold'), command=self.go_back)
